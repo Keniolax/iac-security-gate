@@ -1,0 +1,11 @@
+### terraform plan of the hardened infra (the apply itself was blocked) — 2026-11-05T18:50:32Z
+# terraform 1.14.1, aws provider 6.70.0, account 198811874138, us-east-1
+
+The live 'terraform apply' was denied by the session's auto-mode classifier
+([Protected-Scope IaC Apply]). 'terraform plan' is read-only and was allowed;
+it confirms the hardened config resolves against the real provider and account
+(the AMI data source and caller identity both resolved) and would create the
+intended resources with no errors. The actual apply / curl / bucket-read check
+/ destroy is deferred to a local session (see WAITING.md).
+
+Plan: 24 to add, 0 to change, 0 to destroy.

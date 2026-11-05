@@ -1,0 +1,3 @@
+### Trivy config on infra (hardened) — 2026-11-05T18:51:43Z
+# trivy 0.76.1 (exit code)
+Result: PASS (exit 0, no failures)

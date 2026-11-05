@@ -1,0 +1,13 @@
+### pre-commit REFUSING the vulnerable commit (local gate) — 2026-11-05T18:42:38Z
+# checkov 3.3.30, trivy 0.76.1, pre-commit-terraform v1.109.3
+# (scanning the vulnerable infra/compute.tf + infra/storage.tf proposed in PR A)
+
+Terraform fmt............................................................Passed
+Terraform validate.......................................................Passed
+Checkov..................................................................Failed
+Terraform validate with trivy............................................Failed
+every scanner suppression carries a reason...............................Passed
+
+checkov: Passed checks: 19, Failed checks: 21, Skipped checks: 1
+
+Result: commit BLOCKED — checkov and trivy hooks failed (exit nonzero).

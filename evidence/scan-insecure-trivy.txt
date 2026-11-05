@@ -1,0 +1,4 @@
+### Trivy config on examples/insecure (vulnerable) — 2026-11-05T18:51:37Z
+# trivy 0.76.1
+Tests: 18 (SUCCESSES: 0, FAILURES: 18)
+Failures: 18 (UNKNOWN: 0, LOW: 4, MEDIUM: 2, HIGH: 10, CRITICAL: 2)

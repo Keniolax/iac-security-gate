@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="660" viewBox="0 0 1040 660" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1040" height="660" fill="#ffffff"/>
+  <text x="32" y="44" font-size="26" font-weight="700" fill="#111827">iac-security-gate</text>
+  <text x="32" y="70" font-size="15" fill="#4b5563">Scan Terraform before it reaches AWS. A finding turns the build red.</text>
+
+  <!-- ===== Band 1: the gate pipeline ===== -->
+  <text x="32" y="112" font-size="14" font-weight="700" fill="#6b7280">THE GATE</text>
+  <line x1="32" y1="120" x2="1008" y2="120" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Developer -->
+  <rect x="32" y="140" width="150" height="70" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="107" y="170" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">Developer</text>
+  <text x="107" y="190" font-size="12" fill="#475569" text-anchor="middle">edits Terraform</text>
+
+  <!-- pre-commit -->
+  <rect x="222" y="140" width="170" height="70" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+  <text x="307" y="166" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">pre-commit</text>
+  <text x="307" y="185" font-size="11.5" fill="#475569" text-anchor="middle">Checkov + Trivy</text>
+  <text x="307" y="200" font-size="11.5" fill="#475569" text-anchor="middle">on the laptop</text>
+
+  <!-- Pull request -->
+  <rect x="432" y="140" width="150" height="70" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+  <text x="507" y="170" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">Pull request</text>
+  <text x="507" y="190" font-size="12" fill="#475569" text-anchor="middle">to main</text>
+
+  <!-- CI gate -->
+  <rect x="622" y="132" width="200" height="86" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2.5"/>
+  <text x="722" y="160" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">CI gate (of record)</text>
+  <text x="722" y="180" font-size="11.5" fill="#475569" text-anchor="middle">Checkov + Trivy</text>
+  <text x="722" y="197" font-size="11.5" fill="#475569" text-anchor="middle">hard-fail, no skips</text>
+  <text x="722" y="212" font-size="11.5" fill="#475569" text-anchor="middle">+ skip-reason check</text>
+
+  <!-- merge to main -->
+  <rect x="862" y="140" width="146" height="70" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="935" y="170" font-size="15" font-weight="700" fill="#065f46" text-anchor="middle">Merge</text>
+  <text x="935" y="190" font-size="12" fill="#047857" text-anchor="middle">to main ✓</text>
+
+  <!-- arrows band 1 -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#475569"/>
+    </marker>
+    <marker id="arrowred" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowgrn" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#059669"/>
+    </marker>
+  </defs>
+  <line x1="182" y1="175" x2="218" y2="175" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="392" y1="175" x2="428" y2="175" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="582" y1="175" x2="618" y2="175" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="822" y1="175" x2="858" y2="175" stroke="#059669" stroke-width="2" marker-end="url(#arrowgrn)"/>
+  <text x="840" y="168" font-size="11" fill="#059669" text-anchor="middle">pass</text>
+
+  <!-- blocked branch -->
+  <line x1="722" y1="218" x2="722" y2="258" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowred)"/>
+  <rect x="632" y="258" width="180" height="46" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="722" y="280" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">Finding → build RED</text>
+  <text x="722" y="297" font-size="11" fill="#b91c1c" text-anchor="middle">merge blocked (PR #1)</text>
+
+  <!-- apply arrow down to AWS -->
+  <line x1="935" y1="210" x2="935" y2="360" stroke="#059669" stroke-width="2" marker-end="url(#arrowgrn)"/>
+  <text x="992" y="290" font-size="11.5" fill="#059669" text-anchor="middle" transform="rotate(90 992 290)">terraform apply</text>
+
+  <!-- ===== Band 2: the AWS VPC ===== -->
+  <text x="32" y="360" font-size="14" font-weight="700" fill="#6b7280">WHAT DEPLOYS (hardened infra/)</text>
+  <line x1="32" y1="368" x2="1008" y2="368" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- VPC box -->
+  <rect x="32" y="388" width="740" height="248" rx="12" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="50" y="412" font-size="13" font-weight="700" fill="#374151">VPC 10.20.0.0/16</text>
+
+  <!-- IGW -->
+  <rect x="330" y="398" width="120" height="40" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="390" y="423" font-size="12.5" font-weight="700" fill="#1e3a8a" text-anchor="middle">Internet GW</text>
+
+  <!-- public subnet -->
+  <rect x="52" y="452" width="420" height="166" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="70" y="474" font-size="12.5" font-weight="700" fill="#1e40af">Public subnet 10.20.1.0/24</text>
+
+  <!-- SG -->
+  <rect x="72" y="488" width="170" height="112" rx="9" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="157" y="508" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Security group</text>
+  <text x="157" y="527" font-size="11" fill="#b45309" text-anchor="middle">in: HTTP 80 only</text>
+  <text x="157" y="543" font-size="11" fill="#b45309" text-anchor="middle">out: HTTPS 443</text>
+  <text x="157" y="559" font-size="11" fill="#b45309" text-anchor="middle">no SSH</text>
+
+  <!-- EC2 -->
+  <rect x="262" y="488" width="190" height="112" rx="9" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+  <text x="357" y="508" font-size="12.5" font-weight="700" fill="#3730a3" text-anchor="middle">t3.micro web</text>
+  <text x="357" y="526" font-size="11" fill="#4338ca" text-anchor="middle">IMDSv2 required</text>
+  <text x="357" y="542" font-size="11" fill="#4338ca" text-anchor="middle">encrypted volume</text>
+  <text x="357" y="558" font-size="11" fill="#4338ca" text-anchor="middle">SSM access + EIP</text>
+  <text x="357" y="578" font-size="11" fill="#4338ca" text-anchor="middle">serves one-line page</text>
+
+  <!-- private subnet -->
+  <rect x="492" y="452" width="262" height="166" rx="10" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="510" y="474" font-size="12.5" font-weight="700" fill="#374151">Private subnet 10.20.2.0/24</text>
+  <text x="623" y="534" font-size="12" fill="#6b7280" text-anchor="middle">no route to the</text>
+  <text x="623" y="551" font-size="12" fill="#6b7280" text-anchor="middle">internet (no NAT)</text>
+
+  <!-- S3 -->
+  <rect x="812" y="452" width="196" height="120" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="910" y="476" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">S3 assets bucket</text>
+  <text x="910" y="497" font-size="11" fill="#047857" text-anchor="middle">block public access</text>
+  <text x="910" y="513" font-size="11" fill="#047857" text-anchor="middle">encrypted + versioned</text>
+  <text x="910" y="529" font-size="11" fill="#047857" text-anchor="middle">TLS-only policy</text>
+  <text x="910" y="545" font-size="11" fill="#047857" text-anchor="middle">private</text>
+
+  <!-- internet arrow to IGW -->
+  <line x1="390" y1="388" x2="390" y2="398" stroke="#2563eb" stroke-width="2"/>
+  <text x="390" y="384" font-size="11" fill="#2563eb" text-anchor="middle">HTTP from internet</text>
+  <line x1="390" y1="438" x2="390" y2="486" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>

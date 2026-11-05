@@ -1,0 +1,41 @@
+### Gate proof: a vulnerable PR is red, the fixed PR is green — 2026-11-05
+
+Repo: github.com/Keniolax/iac-security-gate  (private during week 12)
+Scanners: checkov 3.3.30, trivy 0.76.1 (both hard-fail in CI)
+
+PR #1  "Add web server and asset bucket"  (vulnerable)
+  https://github.com/Keniolax/iac-security-gate/pull/1
+  CI run 42086911991 — conclusion: FAILURE (red)
+  https://github.com/Keniolax/iac-security-gate/actions/runs/42086911991
+  Blocked at the "Checkov scan (hard fail)" step:
+    Passed checks: 19, Failed checks: 21, Skipped checks: 1
+    CKV_AWS_24  SSH (22) open to 0.0.0.0/0
+    CKV_AWS_79  IMDSv1 enabled
+    CKV_AWS_8   instance EBS/root volume not encrypted
+    CKV_AWS_53/54/55/56  S3 public access block turned off
+    CKV_AWS_70  S3 bucket policy allows any Principal (anonymous read)
+  (trivy and the skip checker were skipped: the job stops at the first
+   failing step. Locally both scanners fail on this code — see
+   scan-insecure-*.txt.)
+  Also refused locally by pre-commit before the push — see precommit-refusal.txt.
+  NOT MERGED. Left closed as evidence.
+
+PR #2  "Add web server and asset bucket (hardened)"  (the fix)
+  https://github.com/Keniolax/iac-security-gate/pull/2
+  CI run 42087006460 — conclusion: SUCCESS (green)
+  https://github.com/Keniolax/iac-security-gate/actions/runs/42087006460
+  Merged to main.
+
+main push CI run 42086585321 — SUCCESS (the network-only base, before the app).
+
+### Negative test: remove the hard-fail and the gate goes quiet — 2026-11-05
+Throwaway PR #3 on branch demo/negative-softfail: the SAME vulnerable infra as
+PR #1, but with continue-on-error on both scanner steps.
+  CI run 42087560847 — conclusion: SUCCESS (green)
+  https://github.com/Keniolax/iac-security-gate/actions/runs/42087560847
+  The scanners still FOUND everything (checkov "Failed checks: 21" incl.
+  CKV_AWS_24; trivy reported CRITICAL/HIGH failures) but continue-on-error
+  masked them, so the build passed. A gate that cannot turn red is not a gate.
+  PR #3 closed after the run was recorded. Branch deletion is deferred to a
+  local session: this cloud session cannot delete remote branches (the proxy
+  and the auto-mode classifier both block it).

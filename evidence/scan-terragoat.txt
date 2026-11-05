@@ -1,0 +1,8 @@
+### Both scanners on Terragoat AWS (code we did not write) — 2026-11-05T18:44:40Z
+# bridgecrewio/terragoat @ 729f8da, path terraform/aws, scanned not deployed
+# checkov 3.3.30, trivy 0.76.1
+
+checkov (terraform framework): Passed checks: 115, Failed checks: 215, Skipped checks: 0
+trivy config: 115 misconfigurations
+
+Both scanners fire heavily on third-party vulnerable IaC. Terragoat is never applied.

@@ -1,0 +1,3 @@
+### Checkov on infra (hardened) — 2026-11-05T18:51:38Z
+# checkov 3.3.30
+Passed checks: 73, Failed checks: 0, Skipped checks: 6
