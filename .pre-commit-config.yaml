@@ -1,0 +1,36 @@
+# The gate on the developer's machine. The same checkov and trivy that run in
+# CI run here, before the commit is even made, so insecure Terraform is caught
+# at the earliest point. Hooks are pinned by commit SHA.
+#
+# examples/insecure/ is excluded: it is deliberately broken so the gate has
+# something to catch, and `make scan-insecure` scans it on demand.
+#
+# Install once with: make precommit-install   (or: pre-commit install)
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: 443ffdff1cc1663b701ae73e7459029fe883455a # v1.109.3
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
+        exclude: ^examples/insecure/
+        args:
+          - --tf-init-args=-backend=false
+      - id: terraform_checkov
+        exclude: ^examples/insecure/
+        args:
+          - --args=--compact
+          - --args=--quiet
+      - id: terraform_trivy
+        exclude: ^examples/insecure/
+        args:
+          - --args=--exit-code=1
+          - --args=--quiet
+
+  - repo: local
+    hooks:
+      - id: check-skips
+        name: every scanner suppression carries a reason
+        entry: python3 scripts/check-skips.py infra
+        language: system
+        pass_filenames: false
+        files: ^infra/.*\.tf$
