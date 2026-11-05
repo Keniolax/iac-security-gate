@@ -50,6 +50,7 @@ jobs:
         run: pip install "checkov==${CHECKOV_VERSION}"
 
       - name: Checkov scan (hard fail)
+        continue-on-error: true  # NEGATIVE TEST: gate disabled on purpose
         run: checkov -d infra --compact --quiet
 
       - name: Install Trivy (pinned + sha256)
@@ -58,6 +59,7 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Trivy config scan (hard fail)
+        continue-on-error: true  # NEGATIVE TEST: gate disabled on purpose
         run: trivy config infra --quiet --exit-code 1
 
       - name: Every scanner suppression carries a reason
