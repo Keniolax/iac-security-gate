@@ -1,0 +1,31 @@
+# Terraform working files and state never enter git.
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# The dependency lock file IS committed (it pins the provider), so do not
+# ignore it. Terraform plan output and backend config are not committed.
+tfplan
+*.tfplan
+.terraformrc
+terraform.rc
+
+# Secrets and local environment.
+.env
+credentials
+*.pem
+
+# Python tooling.
+__pycache__/
+.pytest_cache/
+
+# Local tool installs.
+bin/
