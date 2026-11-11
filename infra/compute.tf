@@ -95,7 +95,7 @@ resource "aws_instance" "web" {
   # credential-theft path that plain IMDSv1 allows.
   metadata_options {
     http_endpoint               = "enabled"
-    http_tokens                 = "required"
+    http_tokens                 = "optional"
     http_put_response_hop_limit = 1
   }
 
