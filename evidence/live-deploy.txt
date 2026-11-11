@@ -1,0 +1,30 @@
+=== Week 12 live deploy check, account 198811874138, us-east-1 ===
+Recorded: 2026-11-11T19:16:49Z
+
+=== make deploy ===
+Apply complete! Resources: 24 added, 0 changed, 0 destroyed.
+assets_bucket = "seceng-iac-gate-assets-198811874138"
+private_subnet_id = "subnet-0821ed859da03f2cc"
+public_subnet_id = "subnet-0d6b80272b9981605"
+vpc_id = "vpc-0c44ecbb359de9fa6"
+web_instance_id = "i-0c3d0d3b7a7206988"
+web_public_ip = "52.71.153.113"
+web_url = "http://52.71.153.113/"
+
+=== curl web_url ===
+seceng-iac-gate week 12: IaC caught before it shipped
+
+HTTP=200
+
+=== Instance metadata options (IMDSv2 required) ===
+1	required
+=== Root volume encrypted ===
+True
+
+=== Anonymous S3 list (unsigned HTTPS) ===
+HTTP=403
+AccessDenied) when calling the ListObjectsV2 operation: Access Denied
+=== Anonymous S3 over plain HTTP ===
+HTTP=403
+=== Public access block ===
+PUBLICACCESSBLOCKCONFIGURATION	True	True	True	True

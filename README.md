@@ -151,16 +151,26 @@ changes under you is not a gate.
   [PR #4](https://github.com/Keniolax/iac-security-gate/pull/4) changed only IMDSv2 to IMDSv1.
   Terraform validated, Checkov failed, and the merge API refused it because the
   required check was failing. See [`evidence/merge-blocked.json`](evidence/merge-blocked.json).
-- Live deployment and teardown remain unverified: the local AWS credentials
-  were rejected with `InvalidClientTokenId` on 2026-11-11 UTC.
+- The hardened app was deployed live on 2026-11-11 UTC (24 resources). The web
+  page answered HTTP 200, IMDSv2 was required, the root volume was encrypted, and
+  anonymous S3 listing returned 403 `AccessDenied`. See
+  [`evidence/live-deploy.txt`](evidence/live-deploy.txt). After `make destroy`,
+  [`evidence/teardown.txt`](evidence/teardown.txt) matched
+  [`evidence/baseline.txt`](evidence/baseline.txt) except for the timestamp.
 - Linux/amd64 is the tested platform. The committed lock file carries hashes for
   all platforms, but Terraform is only exercised on amd64 here.
 
 ## Teardown
 
 ```bash
-make destroy      # removes every resource (needs AWS credentials)
+make baseline         # before deploy: snapshot the account
+make destroy          # removes every resource (needs AWS credentials)
+make teardown-check   # after destroy: snapshot again
+diff <(grep -v '^Recorded:' evidence/baseline.txt) <(grep -v '^Recorded:' evidence/teardown.txt)
 ```
+
+The two snapshots must match except for the `Recorded:` line. If they do not,
+something was left behind.
 
 `make deploy` tags every resource `lab = seceng-bootcamp-week-12` and names it
 `seceng-iac-gate-*`, so if state is ever lost everything can be found and
