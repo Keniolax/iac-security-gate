@@ -35,7 +35,7 @@ has something real to protect.
 | [#1](https://github.com/Keniolax/iac-security-gate/pull/1) | web server + bucket, **insecure** | 🔴 [failed](https://github.com/Keniolax/iac-security-gate/actions/runs/42086911991) | not merged, left closed as evidence |
 | [#2](https://github.com/Keniolax/iac-security-gate/pull/2) | web server + bucket, **hardened** | 🟢 [passed](https://github.com/Keniolax/iac-security-gate/actions/runs/42087006460) | merged |
 
-PR #1 was blocked at the Checkov step with 21 findings named (SSH open, public
+PR #1 failed at the Checkov step with 21 findings named (SSH open, public
 bucket, IMDSv1, unencrypted volume). It was also refused locally by pre-commit
 before it could be pushed. See [`evidence/`](evidence/).
 
@@ -147,11 +147,12 @@ changes under you is not a gate.
 
 ## Limitations
 
-- **Required-check enforcement is not on yet.** GitHub Free cannot require a CI
-  check to merge on a *private* repo (the rulesets API returns 403). While the
-  repo is private the gate is proven by the red/green PR pair above; once the
-  repo is public, a branch ruleset makes a red check actually block the merge
-  button. Until then, "blocked" means "CI is red," not "merge is disabled."
+- `main` requires the GitHub Actions `gate` check, with no bypass actors.
+  [PR #4](https://github.com/Keniolax/iac-security-gate/pull/4) changed only IMDSv2 to IMDSv1.
+  Terraform validated, Checkov failed, and the merge API refused it because the
+  required check was failing. See [`evidence/merge-blocked.json`](evidence/merge-blocked.json).
+- Live deployment and teardown remain unverified: the local AWS credentials
+  were rejected with `InvalidClientTokenId` on 2026-11-11 UTC.
 - Linux/amd64 is the tested platform. The committed lock file carries hashes for
   all platforms, but Terraform is only exercised on amd64 here.
 
